@@ -16,10 +16,14 @@ def get_kq_info(headers, url_get_info):
         response_get_info = requests.get(url_get_info, headers=headers)
         if response_get_info.status_code == 200:
             data_get_info = response_get_info.json()
-            # 提取返回的data部分
-            kq_obj = data_get_info.get('data', {})
-            logging.info(f"成功获取签到信息：{data_get_info}")
-            return kq_obj
+            if isinstance(data_get_info, dict):  # 确保返回的是字典
+                # 提取返回的data部分
+                kq_obj = data_get_info.get('data', {})
+                logging.info(f"成功获取签到信息：{data_get_info}")
+                return kq_obj
+            else:
+                logging.error(f"返回的数据格式不是字典：{data_get_info}")
+                return None
         else:
             logging.error(f"GET 请求失败，状态码：{response_get_info.status_code}")
             return None
@@ -76,7 +80,7 @@ def main():
     kq_obj = get_kq_info(headers, url_get_info)
 
     # Step 2: 如果获取到有效的签到信息，进行签到
-    if kq_obj:
+    if kq_obj and isinstance(kq_obj, dict):  # 确保 kq_obj 是字典
         if kq_obj.get('info', '') == 'error':
             logging.info("签到信息为 error")
             return
