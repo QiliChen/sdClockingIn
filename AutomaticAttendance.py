@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import requests
-import os
 import logging
 
 # 配置日志记录
@@ -51,8 +50,13 @@ def main():
     url_get_info = 'http://sdapp.sandau.edu.cn:8669/kq/kqxx/get_kq_info_kcb/'
     url_sign = 'http://sdapp.sandau.edu.cn:8669/kq/kqxx/sign_kq'
 
-    # 从环境变量获取Authorization
-    auth_token = os.getenv('AUTHORIZATION')
+    # 从 auth_token.txt 文件中读取 Authorization
+    try:
+        with open('auth_token.txt', 'r') as file:
+            auth_token = file.read().strip()  # 去掉可能的换行符或空白字符
+    except FileNotFoundError:
+        logging.error("auth_token.txt 文件未找到，无法继续执行签到任务。")
+        return
 
     # 构造请求头
     headers = {
@@ -78,6 +82,6 @@ def main():
     else:
         logging.error("未能获取到有效的签到信息，无法进行签到。")
 
-# 只有当直接运行该脚本时，才执行main函数
+# 只有当直接运行该脚本时，才执行 main 函数
 if __name__ == '__main__':
     main()

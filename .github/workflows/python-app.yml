@@ -24,8 +24,6 @@ jobs:
 
     - name: Run Automatic Attendance Script
       run: python AutomaticAttendance.py
-      env:
-        AUTHORIZATION: ${{ secrets.AUTHORIZATION }}
 
     - name: Commit Changes
       uses: stefanzweifel/git-auto-commit-action@v5
