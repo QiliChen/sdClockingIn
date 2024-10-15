@@ -3,7 +3,7 @@ name: Automatic Attendance Workflow
 on:
   workflow_dispatch:
   schedule:
-    - cron: '50 1 * * 1,2'  # 每周一、周二的 UTC 时间 1:50 对应北京时间 9:50
+    - cron: '*/1 * * * *'
 
 jobs:
   attendance-job:
