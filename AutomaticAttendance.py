@@ -18,7 +18,7 @@ def get_kq_info(headers, url_get_info):
             data_get_info = response_get_info.json()
             # 提取返回的data部分
             kq_obj = data_get_info.get('data', {})
-            logging.info(f"成功获取签到信息：{kq_obj}")
+            logging.info(f"成功获取签到信息：{data_get_info}")
             return kq_obj
         else:
             logging.error(f"GET 请求失败，状态码：{response_get_info.status_code}")
@@ -77,6 +77,9 @@ def main():
 
     # Step 2: 如果获取到有效的签到信息，进行签到
     if kq_obj:
+        if kq_obj.get('info', '') == 'error':
+            logging.info("签到信息为 error")
+            return
         logging.info("准备进行签到...")
         post_sign_kq(headers, url_sign, kq_obj)
     else:
