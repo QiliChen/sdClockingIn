@@ -3,7 +3,7 @@ name: Automatic Attendance Workflow
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/1 * * * *'
+    - cron: '50 1 * * 1,2'
 
 jobs:
   attendance-job:
